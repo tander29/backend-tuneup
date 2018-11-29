@@ -77,8 +77,8 @@ def timeit_helper():
     t = timeit.Timer(stmt='find_duplicate_movies("movies.txt")',
                      setup="from __main__ import find_duplicate_movies")
 
-    process_repitions = 2
-    sample_size = 2
+    process_repitions = 7
+    sample_size = 3
     result = t.repeat(repeat=process_repitions, number=sample_size)
     return min(result)/sample_size
 
@@ -89,8 +89,7 @@ def main():
     result = find_duplicate_movies('movies.txt')
     print('Found {} duplicate movies:'.format(len(result)))
     print('\n'.join(result))
-    # print(timeit_helper())
-    # profile(find_duplicate_movies, 'movies.txt')
+    print(timeit_helper())
 
 
 if __name__ == '__main__':
