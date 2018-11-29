@@ -44,7 +44,6 @@ def find_duplicate_movies(src):
     """Returns a list of duplicate movies from a src list"""
     movies = read_movies(src)
     duplicates = []
-
     my_dictionary = {}
     for movie in movies:
         if movie in my_dictionary:
@@ -54,6 +53,7 @@ def find_duplicate_movies(src):
         if my_dictionary[movie] > 1 and movie not in duplicates:
             duplicates.append(movie)
     return duplicates
+    # hmmm
     # ---------------Method below delivers ~0.05------------------
     # return [movie for n, movie in enumerate(movies) if movie in movies[:n]]
     #
@@ -90,6 +90,7 @@ def main():
     print('Found {} duplicate movies:'.format(len(result)))
     print('\n'.join(result))
     print(timeit_helper())
+    print(":)")
 
 
 if __name__ == '__main__':
