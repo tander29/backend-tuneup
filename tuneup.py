@@ -76,8 +76,8 @@ def timeit_helper_original():
     # YOUR CODE GOES
     t = timeit.Timer(stmt='find_duplicate_movies_orig("movies.txt")',
                      setup="from __main__ import find_duplicate_movies_orig")
-    process_repitions = 3
-    sample_size = 2
+    process_repitions = 7
+    sample_size = 3
     result = t.repeat(repeat=process_repitions, number=sample_size)
     answer = 'Original time across {} repeats of {} runs/repeat= {}'.format(
         process_repitions, sample_size, min(result)/sample_size)
@@ -90,8 +90,8 @@ def timeit_helper_improved():
     """Part A:  Obtain some profiling measurements using timeit"""
     t = timeit.Timer(stmt='find_duplicate_movies("movies.txt")',
                      setup="from __main__ import find_duplicate_movies")
-    process_repitions = 3
-    sample_size = 2
+    process_repitions = 7
+    sample_size = 3
     result = t.repeat(repeat=process_repitions, number=sample_size)
     answer = 'Improved time of {} repeats of {} runs/repeat= {}'.format(
         process_repitions, sample_size, min(result)/sample_size)
