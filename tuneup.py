@@ -7,7 +7,6 @@ __author__ = "???"
 import cProfile
 import pstats
 import timeit
-# import collections
 
 
 def profile(func):
@@ -26,7 +25,14 @@ def profile(func):
 
 def read_movies(src):
     """Read a list of movie titles"""
-    print('Reading file: {}'.format(src))
+    print('Reading file with improved code: {}'.format(src))
+    with open(src, 'r') as f:
+        return f.read().splitlines()
+
+
+def read_movies_original(src):
+    """Read a list of movie titles"""
+    print('Reading file with original code: {}'.format(src))
     with open(src, 'r') as f:
         return f.read().splitlines()
 
@@ -39,7 +45,6 @@ def is_duplicate(title, movies):
     return False
 
 
-# @profile
 def find_duplicate_movies(src):
     """Returns a list of duplicate movies from a src list"""
     movies = read_movies(src)
@@ -53,43 +58,54 @@ def find_duplicate_movies(src):
         if my_dictionary[movie] > 1 and movie not in duplicates:
             duplicates.append(movie)
     return duplicates
-    # hmmm
-    # ---------------Method below delivers ~0.05------------------
-    # return [movie for n, movie in enumerate(movies) if movie in movies[:n]]
-    #
-    # -----Method below using collections delivered-------
-    # return [movie for movie, count in collections.Counter(movies).items()
-    #         if count > 1]
-    # ---------orignal code delivers slowest 3.2 seconds-----------
-    # while movies:
-    #     movie = movies.pop()
-    #     if is_duplicate(movie, movies):
-    #         duplicates.append(movie)
-    # return duplicates
 
 
-def timeit_helper():
-    """Part A:  Obtain some profiling measurements using timeit"""
-    # YOUR CODE GOES
-#     t = timeit.timeit('find_duplicate_movies("movies.txt")',
-#                       setup="from __main__ import find_duplicate_movies",
-#                       number=10)
-    t = timeit.Timer(stmt='find_duplicate_movies("movies.txt")',
-                     setup="from __main__ import find_duplicate_movies")
-
-    process_repitions = 7
-    sample_size = 3
-    result = t.repeat(repeat=process_repitions, number=sample_size)
-    return min(result)/sample_size
+def find_duplicate_movies_orig(src):
+    movies = read_movies_original(src)
+    duplicates = []
+    while movies:
+        movie = movies.pop()
+        if is_duplicate(movie, movies):
+            duplicates.append(movie)
+    return duplicates
 
 
 @profile
+def timeit_helper_original():
+    """Part A:  Obtain some profiling measurements using timeit"""
+    # YOUR CODE GOES
+    t = timeit.Timer(stmt='find_duplicate_movies_orig("movies.txt")',
+                     setup="from __main__ import find_duplicate_movies_orig")
+    process_repitions = 3
+    sample_size = 2
+    result = t.repeat(repeat=process_repitions, number=sample_size)
+    answer = 'Original time across {} repeats of {} runs/repeat= {}'.format(
+        process_repitions, sample_size, min(result)/sample_size)
+    print
+    return answer
+
+
+@profile
+def timeit_helper_improved():
+    """Part A:  Obtain some profiling measurements using timeit"""
+    t = timeit.Timer(stmt='find_duplicate_movies("movies.txt")',
+                     setup="from __main__ import find_duplicate_movies")
+    process_repitions = 3
+    sample_size = 2
+    result = t.repeat(repeat=process_repitions, number=sample_size)
+    answer = 'Improved time of {} repeats of {} runs/repeat= {}'.format(
+        process_repitions, sample_size, min(result)/sample_size)
+    print
+    return answer
+
+
 def main():
     """Computes a list of duplicate movie entries"""
     result = find_duplicate_movies('movies.txt')
     print('Found {} duplicate movies:'.format(len(result)))
     print('\n'.join(result))
-    print(timeit_helper())
+    print(timeit_helper_original())
+    print(timeit_helper_improved())
     print(":)")
 
 
